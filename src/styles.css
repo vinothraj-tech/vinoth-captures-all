@@ -32,38 +32,38 @@
   --color-ink: var(--ink);
   --color-ink-foreground: var(--ink-foreground);
   --color-ink-muted: var(--ink-muted);
-  --color-glow: var(--glow);
-  --color-success: var(--success);
-  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Jost", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
-  --radius: 1rem;
-  --background: oklch(0.985 0.005 260);
-  --foreground: oklch(0.2 0.04 265);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2 0.04 265);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.04 265);
-  --primary: oklch(0.55 0.22 265);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.95 0.015 265);
-  --secondary-foreground: oklch(0.25 0.05 265);
-  --muted: oklch(0.95 0.01 265);
-  --muted-foreground: oklch(0.48 0.03 265);
-  --accent: oklch(0.72 0.16 230);
-  --accent-foreground: oklch(0.15 0.04 265);
+  --radius: 0.75rem;
+  --background: oklch(0.14 0.015 60);
+  --foreground: oklch(0.94 0.02 85);
+  --card: oklch(0.18 0.018 60);
+  --card-foreground: oklch(0.94 0.02 85);
+  --popover: oklch(0.18 0.018 60);
+  --popover-foreground: oklch(0.94 0.02 85);
+  --primary: oklch(0.78 0.12 85);
+  --primary-foreground: oklch(0.16 0.02 60);
+  --secondary: oklch(0.22 0.02 60);
+  --secondary-foreground: oklch(0.94 0.02 85);
+  --muted: oklch(0.22 0.02 60);
+  --muted-foreground: oklch(0.68 0.03 75);
+  --accent: oklch(0.78 0.12 85);
+  --accent-foreground: oklch(0.16 0.02 60);
   --destructive: oklch(0.6 0.2 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.9 0.015 265);
-  --input: oklch(0.9 0.015 265);
-  --ring: oklch(0.55 0.22 265);
-  --ink: oklch(0.16 0.05 270);
-  --ink-foreground: oklch(0.97 0.01 265);
-  --ink-muted: oklch(0.75 0.04 265);
-  --glow: oklch(0.62 0.24 290);
-  --success: oklch(0.72 0.17 155);
+  --border: oklch(0.28 0.025 65);
+  --input: oklch(0.28 0.025 65);
+  --ring: oklch(0.78 0.12 85);
+  --ink: oklch(0.11 0.012 60);
+  --ink-foreground: oklch(0.94 0.02 85);
+  --ink-muted: oklch(0.68 0.03 75);
+  --gold: oklch(0.78 0.12 85);
+  --gold-soft: oklch(0.88 0.08 90);
 }
 
 @layer base {
@@ -73,46 +73,39 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-body);
-    font-size: 17px;
+    font-size: 16px;
   }
-  .font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
+  .font-display { font-family: var(--font-display); letter-spacing: 0.01em; }
 }
 
 @utility text-balance { text-wrap: balance; }
 
 @utility eyebrow {
-  letter-spacing: 0.2em;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--color-primary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-gold);
 }
 
 @utility glass {
-  background: color-mix(in oklab, var(--ink-foreground) 8%, transparent);
-  border: 1px solid color-mix(in oklab, var(--ink-foreground) 16%, transparent);
+  background: color-mix(in oklab, var(--ink-foreground) 6%, transparent);
+  border: 1px solid color-mix(in oklab, var(--ink-foreground) 14%, transparent);
   backdrop-filter: blur(16px);
 }
 
 @utility lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
   &:hover {
     transform: translateY(-6px);
-    box-shadow: 0 24px 48px -20px color-mix(in oklab, var(--primary) 35%, transparent);
+    box-shadow: 0 24px 48px -20px color-mix(in oklab, var(--gold) 30%, transparent);
   }
 }
 
-@keyframes glow-drift {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(40px, -30px) scale(1.15); }
+@utility gold-line {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
 }
-@utility animate-glow { animation: glow-drift 12s ease-in-out infinite; }
-
-@keyframes float-y {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-14px); }
-}
-@utility animate-float { animation: float-y 6s ease-in-out infinite; }
 
 .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
 .reveal.in { opacity: 1; transform: none; }
