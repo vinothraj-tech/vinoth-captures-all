@@ -197,7 +197,7 @@ function Index() {
         </div>
         {picked !== null && (
           <Reveal className="mt-8 text-center">
-            <p className="text-lg">Lovely choice — <span className="font-semibold text-gold">{styles[picked].name}</span> it is. <a href="#contact" className="ml-1 underline underline-offset-4 hover:text-gold">Tell us your date →</a></p>
+            <p className="text-lg">Lovely choice — <span className="font-semibold text-gold">{styles[picked]!.name}</span> it is. <a href="#contact" className="ml-1 underline underline-offset-4 hover:text-gold">Tell us your date →</a></p>
           </Reveal>
         )}
       </section>
