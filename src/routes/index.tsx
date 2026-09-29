@@ -1,39 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
-import { Camera, Film, Heart, Baby, Sparkles, Users, Phone, Mail, MapPin } from "lucide-react";
-
-import hero from "@/assets/hero.jpg";
-import wedding from "@/assets/wedding.jpg";
-import prewedding from "@/assets/prewedding.jpg";
-import candid from "@/assets/candid.jpg";
-import logo from "@/assets/vinoth-logo.png";
-import g1 from "@/assets/g1.jpg";
-import g2 from "@/assets/g2.jpg";
-import g3 from "@/assets/g3.jpg";
-import g4 from "@/assets/g4.jpg";
-import g5 from "@/assets/g5.jpg";
-import g6 from "@/assets/g6.jpg";
-import g7 from "@/assets/g7.jpg";
-import g8 from "@/assets/g8.jpg";
-import g9 from "@/assets/g9.jpg";
-import g10 from "@/assets/g10.jpg";
-import g11 from "@/assets/g11.jpg";
+import { useEffect, useState, type ReactNode } from "react";
+import {
+  Zap, BadgePercent, Clock, ShieldCheck, Wallet, ArrowDownToLine, Send, CheckCircle2,
+  ShoppingBag, Globe2, PiggyBank, Landmark, Store, Lock, Fingerprint, EyeOff, Banknote,
+  Bitcoin, ArrowUpRight, ArrowDownLeft, ChevronDown, Coins,
+} from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Vinoth Studio — Wedding & Portrait Photography, Coimbatore" },
-      {
-        name: "description",
-        content:
-          "Vinothraj photographs weddings, pre-wedding portraits and films in Coimbatore and across Tamil Nadu. Quiet candids, careful edits, delivered on time.",
-      },
-      { property: "og:title", content: "Vinoth Studio — Wedding & Portrait Photography, Coimbatore" },
-      {
-        property: "og:description",
-        content:
-          "Weddings, portraits and cinematic films shot quietly and edited carefully. Based in Karamadai, Coimbatore.",
-      },
+      { title: "Digital Rupee — Official digital money, issued by the central bank" },
+      { name: "description", content: "The Digital Rupee is cash in digital form. Pay, send and save instantly — backed by the central bank, free to use, available 24/7." },
+      { property: "og:title", content: "Digital Rupee — The future of money is here" },
+      { property: "og:description", content: "Instant, secure, central-bank-backed digital money for everyday payments, transfers and savings." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -41,269 +20,348 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const services = [
-  { icon: Heart, title: "Wedding Stories", desc: "Full-day coverage of muhurtham, rituals and reception.", price: "From Rs. 85,000" },
-  { icon: Camera, title: "Pre-Wedding Portraits", desc: "Location shoots styled around the two of you.", price: "From Rs. 28,000" },
-  { icon: Users, title: "Candid & Rituals", desc: "Unposed documentary frames of family and tradition.", price: "From Rs. 35,000" },
-  { icon: Sparkles, title: "Fashion & Editorial", desc: "Studio lighting for brands, models and lookbooks.", price: "From Rs. 22,000" },
-  { icon: Baby, title: "Maternity & Baby", desc: "Soft natural-light sessions in studio or at home.", price: "From Rs. 18,000" },
-  { icon: Film, title: "Cinematic Films", desc: "Teaser, highlight film and full-length edits in 4K.", price: "From Rs. 60,000" },
+function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+  return <div className={`reveal ${className}`} style={{ transitionDelay: `${delay}ms` }}>{children}</div>;
+}
+
+function useReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll(".reveal");
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && (e.target.classList.add("in"), io.unobserve(e.target))),
+      { threshold: 0.15 },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+}
+
+const nav = [["About", "#about"], ["How it works", "#how"], ["Use cases", "#uses"], ["Security", "#security"], ["FAQ", "#faq"]];
+
+const stats = [
+  { icon: Zap, value: "< 2 sec", label: "Payment settlement" },
+  { icon: BadgePercent, value: "₹0", label: "Fees for personal payments" },
+  { icon: Clock, value: "24/7/365", label: "Always available" },
+  { icon: ShieldCheck, value: "100%", label: "Backed by the central bank" },
 ];
 
-const gallery = [
-  { src: g1, cat: "Wedding Stories", title: "Aarthi & Karthik", sub: "Perur Temple, Coimbatore", tags: ["wedding", "traditional"] },
-  { src: g2, cat: "Pre-Wedding Portraits", title: "Meera & Surya", sub: "Karamadai, Coimbatore", tags: ["prewedding", "outdoor"] },
-  { src: g3, cat: "Candid & Rituals", title: "The Haldi Morning", sub: "Family home, Mettupalayam", tags: ["candid", "traditional"] },
-  { src: g4, cat: "Wedding Stories", title: "Garlands & Vows", sub: "Temple mandapam", tags: ["wedding", "traditional"] },
-  { src: g5, cat: "Wedding Stories", title: "The Thali Moment", sub: "Coimbatore", tags: ["wedding", "traditional"] },
-  { src: g6, cat: "Candid & Rituals", title: "Blessings on the Tray", sub: "Muhurtham rituals", tags: ["candid", "traditional"] },
-  { src: g7, cat: "Bridal Portraits", title: "Before the Ceremony", sub: "Getting ready, Coimbatore", tags: ["bridal", "portrait"] },
-  { src: g8, cat: "Bridal Portraits", title: "Monsoon Bride", sub: "Rainy morning, Tamil Nadu", tags: ["bridal", "outdoor"] },
-  { src: g9, cat: "Bridal Portraits", title: "Dusk in Red & Gold", sub: "Evening portrait", tags: ["bridal", "portrait"] },
-  { src: g10, cat: "Candid & Rituals", title: "The Mirror Smile", sub: "Getting ready", tags: ["candid", "portrait"] },
-  { src: g11, cat: "Receptions", title: "Forehead to Forehead", sub: "Reception evening", tags: ["wedding", "portrait"] },
-  { src: prewedding, cat: "Love Shoots", title: "Under the Old Tree", sub: "Couple portraits, Tamil Nadu", tags: ["prewedding", "outdoor"] },
-  { src: wedding, cat: "Love Shoots", title: "Save the Date — Nihal & Sana", sub: "16th Jan 2025", tags: ["prewedding", "portrait"] },
-  { src: candid, cat: "Love Shoots", title: "We Said Yes — Nihal & Sana", sub: "Engagement, 15th Jan 2025", tags: ["candid", "portrait"] },
+const compare = [
+  { icon: Banknote, name: "Cash", points: ["Issued by the central bank", "Physical only", "Can be lost or stolen"] },
+  { icon: Coins, name: "Digital Rupee", points: ["Issued by the central bank", "Digital and instant", "Stable value, always ₹1 = ₹1"], featured: true },
+  { icon: Bitcoin, name: "Cryptocurrency", points: ["No central issuer", "Digital", "Price swings every day"] },
 ];
 
-const styleOptions = [
-  { value: "", label: "Any style" },
-  { value: "wedding", label: "Traditional wedding" },
-  { value: "prewedding", label: "Pre-wedding / couple" },
-  { value: "candid", label: "Candid & documentary" },
-  { value: "bridal", label: "Bridal portraits" },
-  { value: "outdoor", label: "Outdoor & natural light" },
-  { value: "portrait", label: "Classic portraits" },
+const steps = [
+  { icon: Wallet, title: "Get the wallet", desc: "Download the official app or use your bank's app. Sign up in minutes." },
+  { icon: ArrowDownToLine, title: "Load funds", desc: "Move money in from your bank account — one to one, no conversion." },
+  { icon: Send, title: "Pay or send", desc: "Scan a QR code, tap your phone or send to a contact." },
+  { icon: CheckCircle2, title: "Instant settlement", desc: "The money arrives in seconds. Final, safe and recorded." },
+];
+
+const uses = [
+  { icon: ShoppingBag, title: "Everyday payments", desc: "Groceries, fuel, tea — pay anywhere with a scan or tap, even offline." },
+  { icon: Globe2, title: "Cross-border transfers", desc: "Send money to family abroad in seconds, at a fraction of today's cost." },
+  { icon: PiggyBank, title: "Savings", desc: "Keep a safe balance that's backed by the central bank itself." },
+  { icon: Landmark, title: "Public benefits", desc: "Pensions, subsidies and relief reach you directly, the same day." },
+  { icon: Store, title: "Merchants", desc: "Accept payments with zero fees and get paid instantly, not days later." },
+];
+
+const security = [
+  { icon: Lock, title: "Bank-grade encryption", desc: "Every transaction is protected end to end." },
+  { icon: Fingerprint, title: "Biometric sign-in", desc: "Only you can open your wallet." },
+  { icon: EyeOff, title: "Privacy by design", desc: "Small payments stay private, just like cash." },
+];
+
+const faqs = [
+  ["Is the Digital Rupee the same as cryptocurrency?", "No. It's issued and guaranteed by the central bank, so its value never changes — one Digital Rupee is always worth one rupee."],
+  ["Do I need a bank account?", "No. You can open a basic wallet with your phone number and ID. Linking a bank account makes loading funds easier."],
+  ["Does it cost anything?", "Personal payments and transfers are free. Merchants pay no fees to accept payments."],
+  ["What if I lose my phone?", "Your money isn't stored on the phone. Sign in on a new device and your balance is restored."],
+  ["Can I pay without internet?", "Yes. Small offline payments work phone to phone and sync once you're back online."],
 ];
 
 function Index() {
-  const [eventType, setEventType] = useState("");
-  const [style, setStyle] = useState("");
-  const [searched, setSearched] = useState(false);
-
-  const matches = useMemo(() => {
-    if (!style) return gallery.slice(0, 4);
-    return gallery.filter((g) => g.tags.includes(style)).slice(0, 4);
-  }, [style]);
+  useReveal();
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 20);
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Nav */}
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <a href="#top" className="flex items-center gap-2">
-            <img src={logo} alt="Vinoth Studio" className="h-10 w-auto" />
+      <header className={`fixed inset-x-0 top-0 z-50 transition-all ${scrolled ? "border-b border-ink-foreground/10 bg-ink/70 backdrop-blur-xl" : "bg-transparent"}`}>
+        <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
+          <a href="#top" className="flex items-center gap-2 text-ink-foreground">
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-accent to-glow font-display font-bold">₹</span>
+            <span className="font-display text-lg font-semibold">Digital Rupee</span>
           </a>
-          <nav className="hidden items-center gap-8 text-sm text-muted-foreground sm:flex">
-            <a href="#work" className="transition-colors hover:text-foreground">Work</a>
-            <a href="#services" className="transition-colors hover:text-foreground">Services</a>
-            <a href="#contact" className="transition-colors hover:text-foreground">Contact</a>
+          <nav className="hidden items-center gap-8 text-sm text-ink-muted lg:flex">
+            {nav.map(([l, h]) => <a key={h} href={h} className="transition-colors hover:text-ink-foreground">{l}</a>)}
           </nav>
-          <a
-            href="#contact"
-            className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-          >
-            Book a shoot
-          </a>
+          <a href="#get" className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110">Get the wallet</a>
         </div>
       </header>
 
       {/* Hero */}
-      <section id="top" className="relative flex min-h-screen items-end justify-center overflow-hidden">
-        <img src={hero} alt="Bride at a temple in Coimbatore" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-background/30" />
-        <div className="relative z-10 mx-auto max-w-3xl px-4 pb-24 pt-40 text-center animate-fade-up">
-          <p className="eyebrow">Coimbatore · Since 2014</p>
-          <h1 className="font-display mt-6 text-5xl leading-tight text-balance sm:text-6xl">
-            Photographs that still feel like the day itself.
-          </h1>
-          <p className="mx-auto mt-6 max-w-xl text-muted-foreground">
-            Weddings, portraits and films shot quietly, edited carefully and delivered on time — by Vinothraj.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <a
-              href="#work"
-              className="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-            >
-              View the gallery
-            </a>
-            <a
-              href="#contact"
-              className="rounded-md border border-border bg-background/40 px-6 py-3 text-sm font-semibold backdrop-blur-sm transition-colors hover:bg-secondary"
-            >
-              Check a date
-            </a>
+      <section id="top" className="relative overflow-hidden bg-ink text-ink-foreground">
+        <div className="pointer-events-none absolute -left-32 top-10 h-[480px] w-[480px] rounded-full bg-glow/40 blur-[120px] animate-glow" />
+        <div className="pointer-events-none absolute -right-20 bottom-0 h-[420px] w-[420px] rounded-full bg-accent/35 blur-[120px] animate-glow" style={{ animationDelay: "-6s" }} />
+        <div className="relative mx-auto grid max-w-7xl items-center gap-16 px-5 pb-24 pt-36 sm:px-8 lg:grid-cols-2 lg:pt-44">
+          <Reveal>
+            <span className="glass inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold text-ink-muted">
+              <span className="h-2 w-2 rounded-full bg-success" /> Issued by the central bank
+            </span>
+            <h1 className="font-display mt-6 text-5xl font-bold leading-[1.05] text-balance sm:text-6xl xl:text-7xl">
+              Money, made <span className="bg-gradient-to-r from-accent to-glow bg-clip-text text-transparent">instant</span> and official.
+            </h1>
+            <p className="mt-6 max-w-lg text-lg text-ink-muted">The Digital Rupee is cash in digital form — safe, free to use and accepted everywhere.</p>
+            <div className="mt-9 flex flex-wrap gap-3">
+              <a href="#get" className="rounded-full bg-primary px-7 py-3.5 font-semibold text-primary-foreground transition hover:brightness-110">Get the wallet</a>
+              <a href="#how" className="glass rounded-full px-7 py-3.5 font-semibold transition hover:bg-ink-foreground/15">See how it works</a>
+            </div>
+          </Reveal>
+          <Reveal delay={200} className="relative mx-auto h-[560px] w-full max-w-md">
+            <Phone className="absolute left-1/2 top-0 -translate-x-1/2" />
+            <div className="glass absolute left-0 top-24 rounded-2xl p-4 animate-float">
+              <p className="text-xs text-ink-muted">Received</p>
+              <p className="font-display text-lg font-semibold text-success">+ ₹2,500</p>
+            </div>
+            <div className="glass absolute bottom-24 right-0 flex items-center gap-3 rounded-2xl p-4 animate-float" style={{ animationDelay: "-3s" }}>
+              <Zap className="h-5 w-5 text-accent" />
+              <div><p className="text-sm font-semibold">Settled</p><p className="text-xs text-ink-muted">in 1.4 seconds</p></div>
+            </div>
+            <div className="absolute -right-2 top-6 grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-accent to-glow font-display text-2xl font-bold shadow-2xl animate-float" style={{ animationDelay: "-1.5s" }}>₹</div>
+          </Reveal>
+        </div>
+        {/* Stats */}
+        <div className="relative mx-auto max-w-7xl px-5 pb-20 sm:px-8">
+          <div className="glass grid grid-cols-2 gap-6 rounded-3xl p-8 lg:grid-cols-4">
+            {stats.map((s, i) => (
+              <Reveal key={s.label} delay={i * 100} className="flex items-center gap-4">
+                <s.icon className="h-8 w-8 shrink-0 text-accent" />
+                <div><p className="font-display text-2xl font-bold">{s.value}</p><p className="text-sm text-ink-muted">{s.label}</p></div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Services */}
-      <section id="services" className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
-        <p className="eyebrow">What we shoot</p>
-        <h2 className="font-display mt-4 text-4xl sm:text-5xl">Services</h2>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s) => (
-            <div
-              key={s.title}
-              className="group rounded-xl border border-border bg-card p-6 transition-colors hover:border-primary/50"
-            >
-              <s.icon className="h-6 w-6 text-primary" />
-              <h3 className="font-display mt-4 text-2xl">{s.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{s.desc}</p>
-              <p className="mt-4 text-sm font-semibold text-primary">{s.price}</p>
-            </div>
+      {/* What is */}
+      <section id="about" className="mx-auto max-w-7xl px-5 py-28 sm:px-8">
+        <Reveal className="max-w-2xl">
+          <p className="eyebrow">What is a CBDC?</p>
+          <h2 className="font-display mt-4 text-4xl font-bold sm:text-5xl">The safety of cash. The speed of digital.</h2>
+          <p className="mt-5 text-lg text-muted-foreground">A Central Bank Digital Currency is official money issued directly by the central bank — just like the notes in your wallet, only digital.</p>
+        </Reveal>
+        <div className="mt-14 grid gap-6 md:grid-cols-3">
+          {compare.map((c, i) => (
+            <Reveal key={c.name} delay={i * 120}>
+              <div className={`lift h-full rounded-3xl border p-8 ${c.featured ? "border-primary bg-ink text-ink-foreground" : "bg-card"}`}>
+                <c.icon className={`h-9 w-9 ${c.featured ? "text-accent" : "text-muted-foreground"}`} />
+                <h3 className="font-display mt-5 text-2xl font-semibold">{c.name}</h3>
+                <ul className="mt-5 space-y-3 text-sm">
+                  {c.points.map((p) => (
+                    <li key={p} className="flex gap-2"><CheckCircle2 className={`h-4 w-4 shrink-0 ${c.featured ? "text-success" : "text-muted-foreground"}`} /><span className={c.featured ? "" : "text-muted-foreground"}>{p}</span></li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      {/* Gallery */}
-      <section id="work" className="border-t border-border bg-card/40 py-24">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <p className="eyebrow">Recent work</p>
-          <h2 className="font-display mt-4 text-4xl sm:text-5xl">Selected weddings & stories</h2>
-          <div className="mt-12 columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
-            {gallery.map((g) => (
-              <figure key={g.title} className="group relative overflow-hidden rounded-xl break-inside-avoid">
-                <img
-                  src={g.src}
-                  alt={g.title}
-                  loading="lazy"
-                  className="w-full transition-transform duration-500 group-hover:scale-105"
-                />
-                <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/95 to-transparent p-4 pt-12">
-                  <p className="eyebrow !text-[0.6rem]">{g.cat}</p>
-                  <p className="font-display mt-1 text-xl">{g.title}</p>
-                  <p className="text-xs text-muted-foreground">{g.sub}</p>
-                </figcaption>
-              </figure>
+      {/* How */}
+      <section id="how" className="bg-secondary py-28">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <Reveal className="text-center">
+            <p className="eyebrow">How it works</p>
+            <h2 className="font-display mt-4 text-4xl font-bold sm:text-5xl">Up and running in four steps</h2>
+          </Reveal>
+          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {steps.map((s, i) => (
+              <Reveal key={s.title} delay={i * 120}>
+                <div className="lift h-full rounded-3xl bg-card p-7 shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10"><s.icon className="h-6 w-6 text-primary" /></div>
+                    <span className="font-display text-4xl font-bold text-border">0{i + 1}</span>
+                  </div>
+                  <h3 className="font-display mt-6 text-xl font-semibold">{s.title}</h3>
+                  <p className="mt-2 text-muted-foreground">{s.desc}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Style matcher */}
-      <section className="mx-auto max-w-3xl px-4 py-24 sm:px-6">
-        <p className="eyebrow text-center">Find your style</p>
-        <h2 className="font-display mt-4 text-center text-4xl sm:text-5xl">Tell me about your event</h2>
-        <p className="mx-auto mt-4 max-w-xl text-center text-muted-foreground">
-          Describe your occasion and the look you love — I'll show you work from my portfolio that fits.
-        </p>
-        <form
-          className="mt-10 grid gap-4 sm:grid-cols-2"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSearched(true);
-          }}
-        >
-          <select
-            value={eventType}
-            onChange={(e) => setEventType(e.target.value)}
-            className="rounded-md border border-input bg-card px-4 py-3 text-sm text-foreground"
-          >
-            <option value="">Your event</option>
-            <option>Wedding</option>
-            <option>Engagement</option>
-            <option>Pre-wedding shoot</option>
-            <option>Maternity / baby</option>
-            <option>Fashion / editorial</option>
-            <option>Other</option>
-          </select>
-          <select
-            value={style}
-            onChange={(e) => setStyle(e.target.value)}
-            className="rounded-md border border-input bg-card px-4 py-3 text-sm text-foreground"
-          >
-            {styleOptions.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
-          <button
-            type="submit"
-            className="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 sm:col-span-2"
-          >
-            Show me matching work
-          </button>
-        </form>
-        {searched && (
-          <div className="mt-10 grid grid-cols-2 gap-4 animate-fade-up">
-            {matches.map((g) => (
-              <figure key={g.title} className="overflow-hidden rounded-xl">
-                <img src={g.src} alt={g.title} loading="lazy" className="aspect-[4/3] w-full object-cover" />
-                <figcaption className="bg-card p-3">
-                  <p className="font-display text-lg">{g.title}</p>
-                  <p className="text-xs text-muted-foreground">{g.sub}</p>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* Contact */}
-      <section id="contact" className="border-t border-border bg-card/40 py-24">
-        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <p className="eyebrow">Book a shoot</p>
-          <h2 className="font-display mt-4 text-4xl sm:text-5xl">Let's talk about your day</h2>
-          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            Call, message or email — I usually reply the same day. Dates for the wedding season fill up early, so
-            check early.
-          </p>
-          <div className="mt-12 grid gap-6 text-left sm:grid-cols-2">
-            <div className="rounded-xl border border-border bg-card p-6">
-              <p className="eyebrow !text-[0.6rem]">Photographer</p>
-              <p className="font-display mt-1 text-2xl">Vinothraj</p>
-              <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-                <p className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 text-primary" /> 93448 85815
-                </p>
-                <p className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-primary" /> vv1791180@gmail.com
-                </p>
-                <p className="flex items-start gap-2">
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                  Karamadai, Kannarapalaiyam, Coimbatore — 606102
-                </p>
+      {/* Uses */}
+      <section id="uses" className="mx-auto max-w-7xl px-5 py-28 sm:px-8">
+        <Reveal className="max-w-2xl">
+          <p className="eyebrow">Use cases</p>
+          <h2 className="font-display mt-4 text-4xl font-bold sm:text-5xl">Built for every part of daily life</h2>
+        </Reveal>
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {uses.map((u, i) => (
+            <Reveal key={u.title} delay={i * 100} className={i === 0 ? "lg:row-span-2" : ""}>
+              <div className={`lift h-full rounded-3xl border p-8 ${i === 0 ? "bg-gradient-to-br from-primary to-glow text-primary-foreground" : "bg-card"}`}>
+                <u.icon className={`h-9 w-9 ${i === 0 ? "" : "text-primary"}`} />
+                <h3 className={`font-display mt-6 font-semibold ${i === 0 ? "text-3xl" : "text-xl"}`}>{u.title}</h3>
+                <p className={`mt-3 ${i === 0 ? "text-lg opacity-90" : "text-muted-foreground"}`}>{u.desc}</p>
               </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* Security */}
+      <section id="security" className="relative overflow-hidden bg-ink py-28 text-ink-foreground">
+        <div className="pointer-events-none absolute right-0 top-0 h-96 w-96 rounded-full bg-glow/30 blur-[120px]" />
+        <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-2">
+          <Reveal>
+            <p className="eyebrow !text-accent">Security & privacy</p>
+            <h2 className="font-display mt-4 text-4xl font-bold sm:text-5xl">Protected like a national reserve.</h2>
+            <p className="mt-5 text-lg text-ink-muted">Your Digital Rupee is guaranteed by the central bank and protected by the same standards that secure the country's financial system.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              {["ISO 27001", "PCI DSS", "Data Protection Act", "RBI regulated"].map((b) => (
+                <span key={b} className="glass rounded-full px-4 py-2 text-xs font-semibold">{b}</span>
+              ))}
             </div>
-            <div className="flex flex-col justify-center gap-3">
-              <a
-                href="tel:+919344885815"
-                className="rounded-md bg-primary px-6 py-3 text-center text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-              >
-                Call 93448 85815
-              </a>
-              <a
-                href="https://wa.me/919344885815"
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-md border border-border bg-card px-6 py-3 text-center text-sm font-semibold transition-colors hover:bg-secondary"
-              >
-                Message on WhatsApp
-              </a>
-              <a
-                href="mailto:vv1791180@gmail.com"
-                className="rounded-md border border-border bg-card px-6 py-3 text-center text-sm font-semibold transition-colors hover:bg-secondary"
-              >
-                Email vv1791180@gmail.com
-              </a>
-            </div>
+          </Reveal>
+          <div className="grid gap-5">
+            {security.map((s, i) => (
+              <Reveal key={s.title} delay={i * 120}>
+                <div className="glass lift flex gap-5 rounded-3xl p-6">
+                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-accent/20"><s.icon className="h-6 w-6 text-accent" /></div>
+                  <div><h3 className="font-display text-lg font-semibold">{s.title}</h3><p className="text-ink-muted">{s.desc}</p></div>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border py-10">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 text-center sm:px-6">
-          <img src={logo} alt="Vinoth Studio" className="h-10 w-auto" />
-          <p className="text-sm text-muted-foreground">
-            Wedding, portrait and film work made in Coimbatore, shot across South India.
-          </p>
-          <p className="text-xs text-muted-foreground">© 2026 Vinothraj. All rights reserved.</p>
+      {/* App preview */}
+      <section className="mx-auto max-w-7xl px-5 py-28 sm:px-8">
+        <Reveal className="text-center">
+          <p className="eyebrow">The wallet</p>
+          <h2 className="font-display mt-4 text-4xl font-bold sm:text-5xl">Everything you need, nothing you don't</h2>
+        </Reveal>
+        <div className="mt-16 flex flex-wrap justify-center gap-8">
+          <Reveal><Phone screen="balance" /></Reveal>
+          <Reveal delay={120}><Phone screen="send" /></Reveal>
+          <Reveal delay={240}><Phone screen="history" /></Reveal>
         </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="bg-secondary py-28">
+        <div className="mx-auto max-w-3xl px-5 sm:px-8">
+          <Reveal className="text-center">
+            <p className="eyebrow">FAQ</p>
+            <h2 className="font-display mt-4 text-4xl font-bold sm:text-5xl">Questions, answered</h2>
+          </Reveal>
+          <div className="mt-12 space-y-3">
+            {faqs.map(([q, a]) => (
+              <details key={q} className="group rounded-2xl bg-card p-6 shadow-sm">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-semibold">
+                  {q}<ChevronDown className="h-5 w-5 shrink-0 transition-transform group-open:rotate-180" />
+                </summary>
+                <p className="mt-3 text-muted-foreground">{a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section id="get" className="mx-auto max-w-7xl px-5 py-28 sm:px-8">
+        <Reveal>
+          <div className="relative overflow-hidden rounded-[2rem] bg-ink px-8 py-16 text-center text-ink-foreground sm:px-16">
+            <div className="pointer-events-none absolute left-1/2 top-0 h-80 w-[600px] -translate-x-1/2 rounded-full bg-glow/40 blur-[100px] animate-glow" />
+            <h2 className="font-display relative text-4xl font-bold text-balance sm:text-5xl">Your money, ready for tomorrow.</h2>
+            <p className="relative mx-auto mt-4 max-w-lg text-lg text-ink-muted">Download the official wallet and make your first payment in under five minutes.</p>
+            <div className="relative mt-8 flex flex-wrap justify-center gap-3">
+              <a href="#" className="rounded-full bg-primary px-7 py-3.5 font-semibold text-primary-foreground hover:brightness-110">Download for iOS</a>
+              <a href="#" className="glass rounded-full px-7 py-3.5 font-semibold hover:bg-ink-foreground/15">Download for Android</a>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
+      <footer className="border-t py-14">
+        <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 md:grid-cols-4">
+          <div>
+            <p className="font-display text-lg font-semibold">Digital Rupee</p>
+            <p className="mt-2 text-sm text-muted-foreground">Official digital currency issued by the central bank.</p>
+          </div>
+          {[["Product", ["Wallet", "Merchants", "Developers"]], ["Learn", ["How it works", "Security", "FAQ"]], ["Legal", ["Terms of use", "Privacy policy", "Accessibility"]]].map(([h, ls]) => (
+            <div key={h as string}>
+              <p className="text-sm font-semibold">{h}</p>
+              <ul className="mt-3 space-y-2 text-sm text-muted-foreground">{(ls as string[]).map((l) => <li key={l}><a href="#" className="hover:text-foreground">{l}</a></li>)}</ul>
+            </div>
+          ))}
+        </div>
+        <p className="mx-auto mt-12 max-w-7xl px-5 text-xs text-muted-foreground sm:px-8">© 2026 Digital Rupee. Issued under the authority of the central bank. Illustrative website.</p>
       </footer>
+    </div>
+  );
+}
+
+function Phone({ className = "", screen = "balance" }: { className?: string; screen?: "balance" | "send" | "history" }) {
+  const tx = [["Chai Point", "- ₹40", false], ["Salary", "+ ₹42,000", true], ["Electricity bill", "- ₹1,280", false], ["From Priya", "+ ₹500", true]] as const;
+  return (
+    <div className={`w-[270px] rounded-[2.5rem] border-[10px] border-ink bg-ink shadow-2xl ${className}`}>
+      <div className="h-[520px] overflow-hidden rounded-[1.8rem] bg-gradient-to-b from-ink to-primary/60 p-5 text-ink-foreground">
+        <div className="mx-auto h-5 w-24 rounded-full bg-ink" />
+        {screen === "balance" && (
+          <>
+            <p className="mt-6 text-xs text-ink-muted">Total balance</p>
+            <p className="font-display text-3xl font-bold">₹48,230.50</p>
+            <div className="mt-5 grid grid-cols-2 gap-3">
+              <div className="glass flex flex-col items-center rounded-2xl py-3 text-xs"><ArrowUpRight className="mb-1 h-5 w-5 text-accent" />Send</div>
+              <div className="glass flex flex-col items-center rounded-2xl py-3 text-xs"><ArrowDownLeft className="mb-1 h-5 w-5 text-success" />Receive</div>
+            </div>
+            <div className="mt-5 rounded-2xl bg-gradient-to-br from-accent to-glow p-4">
+              <p className="text-xs opacity-80">Digital Rupee card</p>
+              <p className="mt-6 font-display tracking-widest">•••• 4821</p>
+            </div>
+            <TxList tx={tx.slice(0, 2)} />
+          </>
+        )}
+        {screen === "send" && (
+          <>
+            <p className="mt-6 text-sm font-semibold">Send to Priya</p>
+            <p className="font-display mt-10 text-center text-5xl font-bold">₹500</p>
+            <p className="mt-2 text-center text-xs text-ink-muted">Free · arrives instantly</p>
+            <div className="mt-10 grid grid-cols-3 gap-3 text-center font-display text-lg">
+              {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((n) => <div key={n} className="glass rounded-xl py-2">{n}</div>)}
+            </div>
+            <div className="mt-5 rounded-full bg-primary py-3 text-center text-sm font-semibold text-primary-foreground">Send now</div>
+          </>
+        )}
+        {screen === "history" && (
+          <>
+            <p className="mt-6 text-sm font-semibold">Activity</p>
+            <TxList tx={tx} />
+            <TxList tx={tx.slice(0, 3)} />
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function TxList({ tx }: { tx: readonly (readonly [string, string, boolean])[] }) {
+  return (
+    <div className="mt-4 space-y-2">
+      {tx.map(([n, a, pos]) => (
+        <div key={n} className="glass flex items-center justify-between rounded-xl px-3 py-2.5 text-xs">
+          <span>{n}</span><span className={pos ? "font-semibold text-success" : "font-semibold"}>{a}</span>
+        </div>
+      ))}
     </div>
   );
 }
