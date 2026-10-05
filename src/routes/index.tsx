@@ -1,8 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import {
   Camera, Heart, Baby, Users, Sparkles, Phone, Mail, MessageCircle,
-  MapPin, Star, ChevronDown, Aperture,
+  MapPin, Star, ChevronDown, Aperture, LogIn,
 } from "lucide-react";
 import hero from "@/assets/hero.jpg";
 import logo from "@/assets/vinoth-logo.png";
@@ -106,7 +106,17 @@ function Index() {
           <nav className="hidden items-center gap-8 text-sm text-muted-foreground lg:flex">
             {nav.map(([l, h]) => <a key={h} href={h} className="transition-colors hover:text-foreground">{l}</a>)}
           </nav>
-          <a href="#contact" className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110">Book a Shoot</a>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link
+              to="/auth"
+              aria-label="Admin login"
+              className="flex h-10 items-center gap-2 rounded-full border border-border bg-ink/60 px-3 text-sm font-medium text-muted-foreground backdrop-blur transition hover:border-gold hover:text-foreground sm:px-4"
+            >
+              <LogIn className="h-4 w-4" />
+              <span className="hidden sm:inline">Admin login</span>
+            </Link>
+            <a href="#contact" className="rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 sm:px-5">Book a Shoot</a>
+          </div>
         </div>
       </header>
 
