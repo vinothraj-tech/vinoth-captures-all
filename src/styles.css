@@ -107,8 +107,9 @@
   background: linear-gradient(to right, transparent, var(--gold), transparent);
 }
 
-.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
-.reveal.in { opacity: 1; transform: none; }
+.reveal { opacity: 0; filter: blur(8px); transform: translateY(36px) scale(0.985); transition: opacity 0.75s linear, filter 0.75s linear, transform 0.75s linear; }
+.reveal.in { opacity: 1; filter: none; transform: none; }
+img { transition: filter 0.4s linear, transform 0.4s linear; }
 @media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; }
+  .reveal { opacity: 1; filter: none; transform: none; transition: none; }
 }
