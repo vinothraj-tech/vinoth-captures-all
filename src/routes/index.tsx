@@ -20,6 +20,10 @@ import g8 from "@/assets/g8.jpg";
 import g9 from "@/assets/g9.jpg";
 import g10 from "@/assets/g10.jpg";
 import g11 from "@/assets/g11.jpg";
+import indianWeddingAsset from "@/assets/indian-wedding-couple.jpg.asset.json";
+import maternityAsset from "@/assets/maternity-couple.jpg.asset.json";
+import studioWeddingAsset from "@/assets/studio-wedding-couple.jpg.asset.json";
+import { getManagedGalleryPhotos, type ManagedGalleryPhoto } from "@/lib/gallery.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -59,7 +63,7 @@ const services = [
   { icon: Camera, img: candid, name: "Candid & Portraits", price: "₹8,000 onwards", desc: "Natural, unposed portraits — family, maternity, baby and individual sessions." },
 ];
 
-const gallery = [g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11];
+const gallery = [g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, indianWeddingAsset.url, maternityAsset.url, studioWeddingAsset.url];
 
 const styles = [
   { icon: Heart, name: "Romantic & Candid", desc: "Soft light, real emotions, unscripted moments." },
@@ -79,12 +83,17 @@ function Index() {
   useReveal();
   const [scrolled, setScrolled] = useState(false);
   const [picked, setPicked] = useState<number | null>(null);
+  const [managedGallery, setManagedGallery] = useState<ManagedGalleryPhoto[]>([]);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 20);
     on();
     window.addEventListener("scroll", on, { passive: true });
     return () => window.removeEventListener("scroll", on);
   }, []);
+  useEffect(() => {
+    getManagedGalleryPhotos().then(setManagedGallery).catch(() => setManagedGallery([]));
+  }, []);
+  const allGallery = [...gallery, ...managedGallery.map((photo) => photo.url)];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -165,7 +174,7 @@ function Index() {
             <h2 className="font-display mt-4 text-4xl font-semibold sm:text-5xl">Moments we've frozen in time</h2>
           </Reveal>
           <div className="mt-14 columns-2 gap-4 sm:columns-3 [&>*]:mb-4">
-            {gallery.map((g, i) => (
+            {allGallery.map((g, i) => (
               <Reveal key={g} delay={(i % 3) * 80}>
                 <img src={g} alt={`Vinoth Studio gallery photo ${i + 1}`} className="w-full rounded-2xl border border-border object-cover transition-transform duration-500 hover:scale-[1.02]" loading="lazy" />
               </Reveal>
@@ -197,7 +206,7 @@ function Index() {
         </div>
         {picked !== null && (
           <Reveal className="mt-8 text-center">
-            <p className="text-lg">Lovely choice — <span className="font-semibold text-gold">{styles[picked]!.name}</span> it is. <a href="#contact" className="ml-1 underline underline-offset-4 hover:text-gold">Tell us your date →</a></p>
+            <p className="text-lg">Lovely choice — <span className="font-semibold text-gold">{styles[picked]?.name}</span> it is. <a href="#contact" className="ml-1 underline underline-offset-4 hover:text-gold">Tell us your date →</a></p>
           </Reveal>
         )}
       </section>
