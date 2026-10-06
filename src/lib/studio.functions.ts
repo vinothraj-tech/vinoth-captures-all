@@ -72,7 +72,7 @@ export const submitContactMessage = createServerFn({ method: "POST" })
 
 // ---------- Customer ----------
 
-async function ensureCustomer(supabase: any, userId: string, details?: { fullName?: string; phone?: string; email?: string; address?: string }) {
+async function ensureCustomer(supabase: any, userId: string, details?: { fullName?: string | undefined; phone?: string | undefined; email?: string | undefined; address?: string | undefined }) {
   const { data: existing } = await supabase.from("customers").select("id").eq("user_id", userId).maybeSingle();
   if (existing) {
     if (details) {
@@ -331,9 +331,9 @@ export const adminUpdateOrder = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await requireAdmin(context.supabase, context.userId);
-    const payload: Record<string, string> = {};
-    if (data.paymentStatus) payload.payment_status = data.paymentStatus;
-    if (data.orderStatus) payload.order_status = data.orderStatus;
+    const payload: { payment_status?: string; order_status?: string } = {};
+    if (data.paymentStatus) payload["payment_status"] = data.paymentStatus;
+    if (data.orderStatus) payload["order_status"] = data.orderStatus;
     const { error } = await context.supabase.from("orders").update(payload).eq("id", data.id);
     if (error) throw error;
     return { ok: true };
